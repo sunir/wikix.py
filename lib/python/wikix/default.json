@@ -1,0 +1,244 @@
+      {
+        "root": {
+          "scope": "root",
+          "children": [ 
+            "hr", "lists", "blockquote", "monospace", "table", 
+            "headers",
+            "p"
+          ]
+        },
+
+        "lists": {
+          "children": [ "ul", "ol" ]
+        },
+
+        "ul": {
+          "scope": "multiline",
+          "tag": "ul",
+          "starts": "-",
+          "children": ["li"]
+        },
+
+        "ol": {
+          "scope": "multiline",
+          "tag": "ol",      
+          "starts": "#",
+          "children": ["li"]
+        },
+          
+        "li": {
+          "scope": "cell",
+          "tag": "li",
+          "children": ["lists", "inline_styles"]
+        },
+
+        "blockquote": {
+          "scope": "multiline",
+          "tag": "blockquote",
+          "starts": ">",
+          "children": [ "blockquote", "p" ]
+        },
+
+        "monospace": {
+          "scope": "multiline",
+          "tag": "pre",
+          "starts": " ",
+          "whitespace": "preserve",
+          "children": [ "monospace_line" ]
+        },
+        
+        "monospace_line": {
+          "scope": "line",
+          "children": ["inline_styles"]
+        },
+
+        "table": {
+          "scope": "multiline",
+          "tag": "table",
+          "starts": "||",    
+          "children": ["tr"]
+        },
+        
+        "tr": {
+          "scope": "line",
+          "tag": "tr",
+          "children": ["td"]
+        },
+        
+        "td": {
+          "scope": "inline",
+          "tag": "td",
+          "ends": "||",    
+          "children": ["inline_styles"]
+        },
+
+        "headers": {
+          "children": [ "h6", "h5", "h4", "h3", "h2" ]
+        },
+
+        "h2": {
+          "scope": "line",
+          "starts": "==",
+          "optionallyEnds": "=+",
+          "tag": "h2",
+          
+          "children": ["inline_styles"]
+        },
+
+        "h3": {
+          "scope": "line",
+          "starts": "===",
+          "optionallyEnds": "=+",
+          "tag": "h3",
+          
+          "children": ["inline_styles"]
+        },
+
+        "h4": {
+          "scope": "line",
+          "starts": "====",
+          "optionallyEnds": "=+",
+          "tag": "h4",
+          
+          "children": ["inline_styles"]
+        },
+
+        "h5": {
+          "scope": "line",
+          "starts": "=====",
+          "optionallyEnds": "=+",
+          "tag": "h5",
+          
+          "children": ["inline_styles"]
+        },
+
+        "h6": {
+          "scope": "line",
+          "starts": "======+",
+          "optionallyEnds": "=+",
+          "tag": "h6",
+          
+          "children": ["inline_styles"]
+        },
+
+        "hr": {
+          "scope": "line",
+          "equals": "----",
+          "optionallyEnds": "-+",
+          "tag": "hr"
+        },
+        
+        "p": {
+          "scope": "paragraph",
+          "tag": "p",    
+          "children": ["inline_styles"]
+        },  
+
+        "inline_styles": {
+         "children": [ "escape", "links", "strong", "b", "em", "i", "br" ]
+        },
+        
+        "escape": {
+          "children": ["escape_syntax", "escape_syntax"]
+        },
+
+        "escape_escape_syntax": {
+          "scope": "inline",
+          "equals": "```",
+          "emit": "`"
+        },
+
+        "escape_syntax": {
+          "scope": "inline",
+          "starts": "`",
+          "ends": "`"
+        },
+        
+        "br": {
+          "scope": "inline",
+          "equals": "\n",
+          "tag": "br",
+          "direction": "syntax"
+        },
+
+        "strong": {
+          "scope": "inline",
+          "starts": "*",
+          "ends": "*",
+          "tag": "strong",
+          
+          "children": ["inline_styles"]
+        },
+
+        "em": {
+          "scope": "inline",
+          "starts": "_",
+          "ends": "_",
+          "tag": "em",
+          
+          "children": ["inline_styles"]
+        },
+
+        "b": {
+          "scope": "inline",
+          "starts": "*",
+          "ends": "*",
+          "tag": "b",
+          "direction": "syntax",
+          
+          "children": ["inline_styles"]
+        },
+
+        "i": {
+          "scope": "inline",
+          "starts": "_",
+          "ends": "_",
+          "tag": "i",
+          "direction": "syntax",
+          
+          "children": ["inline_styles"]
+        },
+
+        "links": {
+          "children": [ "empty_descriptive_link", "descriptive_link", "url", "page" ]
+        },
+
+        "empty_descriptive_link": {
+          "scope": "link",
+          "link": {
+            "pattern": "[[ url ]]",
+            "href": "$1",
+            "text": "$1"
+          }
+        },
+
+        "descriptive_link": {
+          "scope": "link",
+          "link": {
+            "pattern": "[[ url  text ]]",
+            "href": "$1", 
+            "text": "$2",
+            "image": "$2"
+          }
+        },
+
+        "url": {
+          "scope": "link",
+          "link": {
+            "pattern": "url",
+            "href": "$1",
+            "text": "$1",
+            "image": ""
+          }
+        },
+        
+        "page": {
+          "scope": "link",
+          "link": {
+            "pattern": "[[ text ]]",
+            "href": "/group/\@space/page/view/$1",
+            "page_missing": "no-such-page",
+            "text": "$1"
+          }
+        }
+      }

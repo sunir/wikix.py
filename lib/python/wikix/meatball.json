@@ -1,0 +1,317 @@
+      {
+        "root": {
+          "scope": "root",
+          "children": [ 
+            "code","pre",
+            "toc",
+            "hr", "lists", "blockquote", "monospace", "table", 
+            "headers",
+            "p"
+          ]
+        },
+
+        "code": {
+          "scope": "block",
+          "starts": "<code>",
+          "ends": "</code>",
+          "whitespace": "preserve",
+          "tag": "code",
+          "children": ["code_line"]
+        },
+        
+        "pre": {
+          "scope": "block",
+          "starts": "<pre>",
+          "ends": "</pre>",
+          "whitespace": "preserve",
+          "tag": "code",
+          "children": ["code_line"]
+        },
+        
+        "toc": {
+          "scope": "line",
+          "equals": "<toc>"
+        },
+        
+        "code_line": {
+          "scope": "line",
+          "children": ["escape"]
+        },
+
+        "hr": {
+          "scope": "line",
+          "equals": "----",
+          "optionallyEnds": "-+",
+          "tag": "hr"
+        },
+
+        "lists": {
+          "children": [ "ul", "ol", "dl" ]
+        },
+
+        "ul": {
+          "scope": "multiline",
+          "tag": "ul",
+          "starts": "*",
+          "children": ["li"]
+        },
+
+        "ol": {
+          "scope": "multiline",
+          "tag": "ol",      
+          "starts": "#",
+          "children": ["li"]
+        },
+        
+        "dl": {
+          "scope": "multiline",
+          "tag": "dl",
+          "starts": ";",
+          "children": ["lists","dd","dt"]
+        },
+        
+        "dt": {
+          "scope": "inline",
+          "tag": "dt",
+          "until": ":",
+          "children": ["inline_styles"]
+        },
+        
+        "dd": {
+          "scope": "line",
+          "tag": "dd",
+          "starts": ":",
+          "children": ["inline_styles"]
+        },
+
+        "li": {
+          "scope": "cell",    
+          "tag": "li",
+          "children": ["lists", "inline_styles"]
+        },
+
+        "blockquote": {
+          "scope": "multiline",
+          "tag": "blockquote",
+          "starts": ":",
+          "children": [ "blockquote", "p" ]
+        },
+
+        "monospace": {
+          "scope": "multiline",
+          "tag": "pre",
+          "starts": " ",
+          "whitespace": "preserve",
+          "children": ["monospace_line"]
+        },
+        
+        "monospace_line": {
+          "scope": "paragraph",
+          "children": ["inline_styles"]
+        },
+
+        "table": {
+          "scope": "multiline",
+          "tag": "table",
+          "starts": "||",    
+          "children": ["tr"]
+        },
+        
+        "tr": {
+          "scope": "line",
+          "tag": "tr",
+          "children": ["td"]
+        },
+        
+        "td": {
+          "scope": "inline",
+          "tag": "td",
+          "ends": "||",
+          "children": ["inline_styles"]
+        },
+
+        "headers": {
+          "children": [ "h6", "h5", "h4", "h3", "h2" ]
+        },
+
+        "h2": {
+          "scope": "line",
+          "starts": "==",
+          "optionallyStarts": " +#",
+          "optionallyEnds": "=+",
+          "tag": "h2",
+          
+          "children": ["inline_styles"]
+        },
+
+        "h3": {
+          "scope": "line",
+          "starts": "===",
+          "optionallyStarts": " +#",
+          "optionallyEnds": "=+",
+          "tag": "h3",
+          
+          "children": ["inline_styles"]
+        },
+
+        "h4": {
+          "scope": "line",
+          "starts": "====",
+          "optionallyStarts": " +#",
+          "optionallyEnds": "=+",
+          "tag": "h4",
+          
+          "children": ["inline_styles"]
+        },
+
+        "h5": {
+          "scope": "line",
+          "starts": "=====",
+          "optionallyStarts": " +#",
+          "optionallyEnds": "=+",
+          "tag": "h5",
+          
+          "children": ["inline_styles"]
+        },
+
+        "h6": {
+          "scope": "line",
+          "starts": "======+",
+          "optionallyStarts": " +#",
+          "optionallyEnds": "=+",
+          "tag": "h6",
+          
+          "children": ["inline_styles"]
+        },
+        
+        "p": {
+          "scope": "paragraph",
+          "tag": "p",    
+          "children": ["inline_styles"]
+        },  
+
+        "inline_styles": {
+          "children": [ "escape", "nowiki_inline", "links", "strong", "b", "em", "i" ]
+        },
+
+        "escape": {
+          "children": ["escape_syntax", "escape_syntax"]
+        },
+
+        "escape_escape_syntax": {
+          "scope": "inline",
+          "equals": "```",
+          "emit": "`"
+        },
+
+        "escape_syntax": {
+          "scope": "inline",
+          "starts": "`",
+          "ends": "`"
+        },
+        
+        "nowiki_inline": {
+          "scope": "inline",
+          "starts": "<nowiki>",
+          "ends": "</nowiki>"
+        },
+        
+        "strong": {
+          "scope": "inline",
+          "starts": "'''",
+          "ends": "'''",
+          "tight": true,
+          "tag": "strong",
+          
+          "children": ["inline_styles"]
+        },
+
+        "em": {
+          "scope": "inline",
+          "starts": "''",
+          "ends": "''",
+          "tag": "em",
+          
+          "children": ["inline_styles"]
+        },
+
+        "b": {
+          "scope": "inline",
+          "starts": "'''",
+          "ends": "'''",
+          "tag": "b",
+          "direction": "syntax",
+          
+          "children": ["inline_styles"]
+        },
+
+        "i": {
+          "scope": "inline",
+          "starts": "''",
+          "ends": "''",
+          "tag": "i",
+          "direction": "syntax",
+          
+          "children": ["inline_styles"]
+        },
+
+        "links": {
+          "children": [ "empty_descriptive_link", "descriptive_link", "url", "page", "intermap", "camelcase" ]
+        },
+        
+        "intermap": {},
+
+        "empty_descriptive_link": {
+          "scope": "link",
+          "link": {
+            "pattern": "[ url ]",
+            "tight": true,
+            "href": "$1",
+            "text": "$1"
+          }
+        },
+
+        "descriptive_link": {
+          "scope": "link",
+          "link": {
+            "pattern": "[ url  text ]",
+            "tight": true,
+            "href": "$1", 
+            "text": "$2",
+            "image": "$2"
+          }
+        },
+
+        "url": {
+          "scope": "link",
+          "link": {
+            "pattern": "url",
+            "href": "$1",
+            "text": "$1",
+            "image": ""
+          }
+        },
+        
+        "page": {
+          "scope": "link",
+          "link": {
+            "pattern": "[[ text ]]",
+            "tight": true,
+            "href": "/group/\@space/page/view/$1",
+            "page_missing": "no-such-page",
+            "text": "$1"
+          }
+        },
+        
+        "camelcase": {
+          "scope": "link",
+          "link": {
+            "pattern": {
+              "regexp": "(\\b[[:upper:]]+[[:lower:]]+[[:upper:]][[:alpha:]]*\\b)"
+            },
+            "href": "/group/@space/page/view/$0",
+            "page_missing": "no-such-page",
+            "text": "$1"
+          }
+        }
+      }
