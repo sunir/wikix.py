@@ -24,8 +24,8 @@ class Intermap(object):
       if '"' in name or '"' in url:
         raise Exception("Cannot include double quote (\") in Intermap file.")
       cells = cells[2:]
-      names.append("intermap__" + name)
       names.append("intermap__" + name + "_bracketed")
+      names.append("intermap__" + name)
       result.append(
         """
         "intermap__%s": {
