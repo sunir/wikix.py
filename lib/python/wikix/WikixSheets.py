@@ -530,9 +530,9 @@ class WikixSheets(object):
         },
 
         "links": {
-          "children": [ "empty_descriptive_link", "descriptive_link", "url", "page", "intermap", "camelcase", "anchor" ]
+          "children": [ "empty_descriptive_link", "descriptive_link", "url", "intermap", "camelcase", "anchor" ]
         },
-        
+
         %s,
 
         "empty_descriptive_link": {
@@ -550,7 +550,7 @@ class WikixSheets(object):
           "link": {
             "pattern": "[ url text ]",
             "tight": true,
-            "href": "$1", 
+            "href": "$1",
             "text": "[$2]",
             "image": "$2"
           }
@@ -565,18 +565,7 @@ class WikixSheets(object):
             "image": ""
           }
         },
-        
-        "page": {
-          "scope": "link",
-          "link": {
-            "pattern": "[[ text ]]",
-            "tight": true,
-            "href": "/wiki/$1",
-            "page_missing": "no-such-page",
-            "text": "$1"
-          }
-        },
-        
+
         "camelcase": {
           "scope": "link",
           "link": {
