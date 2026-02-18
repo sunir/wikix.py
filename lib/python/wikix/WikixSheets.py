@@ -329,8 +329,8 @@ class WikixSheets(object):
         "dt": {
           "scope": "inline",
           "tag": "dt",
-          "until": ":",
-          "children": ["inline_styles"]
+          "until": {"regexp": "(?<!/)(?<!:):(?!/)"},
+          "children": ["links", "inline_styles"]
         },
         
         "dd": {
@@ -447,7 +447,21 @@ class WikixSheets(object):
         },  
 
         "inline_styles": {
-          "children": [ "escape", "nowiki_inline", "links", "strong", "b", "bold", "em", "i", "italic" ]
+          "children": [ "escape", "nowiki_inline", "inline_pre", "inline_code", "links", "strong", "b", "bold", "em", "i", "italic" ]
+        },
+
+        "inline_pre": {
+          "scope": "inline",
+          "starts": "<pre>",
+          "ends": "</pre>",
+          "tag": "pre"
+        },
+
+        "inline_code": {
+          "scope": "inline",
+          "starts": "<code>",
+          "ends": "</code>",
+          "tag": "code"
         },
 
         "escape": {

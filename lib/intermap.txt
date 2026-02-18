@@ -70,7 +70,7 @@ ThoughtStorms http://www.nooranch.com/synaesmedia/wiki/wiki.cgi?
 TrustixWiki http://doc.trustix.org/cgi-bin/trustixdoc.cgi?
 TWiki http://twiki.org/cgi-bin/view/
 Unreal http://wiki.beyondunreal.com/wiki/
-UseMod http://www.usemod.com/cgi-bin/wiki.pl?
+UseMod https://www.usemod.org/cgi-bin/wiki.pl?
 WebSeitzWiki http://webseitz.fluxent.com/wiki/
 WcsWiki http://www.myelin.co.nz/cgi-bin/wcswiki.pl?
 WhoIs http://www.whois.sc/
