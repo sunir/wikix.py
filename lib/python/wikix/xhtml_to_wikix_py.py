@@ -147,8 +147,12 @@ class XhtmlToWikix:
         """Find all descendant rules that handle the given tag."""
         result = []
         for child in rule.children:
-            # Skip rules that only transform to syntax (direction='xhtml' means xhtml-only output)
+            # Skip rules that only emit XHTML (not WikiX syntax)
             if child.definition.get('direction') == 'xhtml':
+                continue
+            # Skip HTML-literal rules (starts/ends are raw HTML tags like <b></b>)
+            # These exist to parse literal HTML in WikiX source, not to be the reverse-transform output.
+            if child.start_syntax().startswith('<'):
                 continue
 
             if child.tag is None:
