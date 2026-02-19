@@ -35,4 +35,4 @@ class Block(Rule):
     starts = self.start_syntax()
     ends = self.end_syntax()
     inner_text = ''.join(inner).strip('\n')
-    return [starts, '\n', inner_text, '\n', ends, '\n']
+    return [starts, '\n', inner_text, '\n', ends, '\n\n']

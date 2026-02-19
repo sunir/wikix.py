@@ -46,4 +46,4 @@ class Multiline(Rule):
       lines = inner_text.split('\n')
       prefixed = '\n'.join(starts + ' ' + line for line in lines)
 
-    return [prefixed, '\n']
+    return [prefixed, '\n\n']
