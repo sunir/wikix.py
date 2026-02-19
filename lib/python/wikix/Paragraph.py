@@ -23,6 +23,11 @@ class Paragraph(Rule):
     self.regexp = re.compile(r'')
 
   def emit_syntax( self, inner ):
-    """Paragraph: plain content + newline (no wrapper syntax)."""
+    """Paragraph: plain content + blank line (double newline).
+
+    WikiX separates paragraphs with a blank line (\n\n).
+    A single \n is not enough — the parser joins lines within
+    the same paragraph.
+    """
     result = ''.join(inner).strip()
-    return [result, '\n']
+    return [result, '\n\n']
