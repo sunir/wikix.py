@@ -147,3 +147,28 @@ class Rule(object):
 
   def must_preserve_whitespace( self ):
     return self.definition.get('whitespace') == 'preserve'
+
+  # --- Reverse transform: XHTML → WikiX ---
+
+  def start_syntax( self ):
+    """Return the literal starts/equals string for reverse transform."""
+    start = self.definition.get('starts')
+    if start is None:
+      eq = self.definition.get('equals')
+      if isinstance(eq, str):
+        start = eq
+    return start or ''
+
+  def end_syntax( self ):
+    """Return the literal ends string for reverse transform."""
+    return self.definition.get('ends') or ''
+
+  def emit_syntax( self, inner ):
+    """Wrap inner content list with this rule's syntax markers.
+
+    Args:
+        inner: list of strings (WikiX markup fragments)
+    Returns:
+        list of strings
+    """
+    return [self.start_syntax()] + inner + [self.end_syntax()]

@@ -1,6 +1,6 @@
 import re
-from Rule import Rule
-from String import String
+from .Rule import Rule
+from .String import String
 
 # TODO: Why is Block.cache an array instead of match_data?
 class Block(Rule):
@@ -29,3 +29,10 @@ class Block(Rule):
       self.cache = map( lambda s: String(s).unchomp(), self.cache )
 
     return [self.start_tag() + "\n"] + self.transform_syntax(self.cache, context) + [self.end_tag()]
+
+  def emit_syntax( self, inner ):
+    """Block rules: starts delimiter + newline + content + newline + ends delimiter."""
+    starts = self.start_syntax()
+    ends = self.end_syntax()
+    inner_text = ''.join(inner).strip('\n')
+    return [starts, '\n', inner_text, '\n', ends, '\n']

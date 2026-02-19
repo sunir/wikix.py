@@ -1,3 +1,6 @@
-from Rule import Rule
+from .Rule import Rule
+
 class Root(Rule):
-	pass
+  def emit_syntax( self, inner ):
+    """Root: join all block-level content directly (blocks add their own newlines)."""
+    return inner

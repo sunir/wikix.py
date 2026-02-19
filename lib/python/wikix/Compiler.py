@@ -1,16 +1,16 @@
 import re
 import json
-from String import String
-from Sheet import Sheet
-from Root import Root
-from Multiline import Multiline
-from Line import Line
-from Block import Block
-from Paragraph import Paragraph
-from Inline import Inline
-from Link import Link
-from Rule import Rule
-from Cell import Cell
+from .String import String
+from .Sheet import Sheet
+from .Root import Root
+from .Multiline import Multiline
+from .Line import Line
+from .Block import Block
+from .Paragraph import Paragraph
+from .Inline import Inline
+from .Link import Link
+from .Rule import Rule
+from .Cell import Cell
 
 class Compiler(object):  
   def compile( self, json_string ):
@@ -87,13 +87,17 @@ class Compiler(object):
     # TODO What does tight mean?
     stopper = ''
     if tightly:
-      pattern_segments = filter(bool, re.split(r'(\s*[^\s\w]+)', pattern))
-      chars = list(set(pattern_segments[0]))
-      if 1==len(chars):
-        stopper = '(?!' + String(chars[0]).to_xs().escape_regexp() + ')'
-      
-    pattern_segments = map( lambda s: String(s).escape_regexp().to_xs(), pattern_segments )
-    pattern_segments = [pattern_segments[0]] + [stopper] + pattern_segments[1:]
+      pattern_segments = list(filter(bool, re.split(r'(\s*[^\s\w]+)', pattern)))
+      if pattern_segments:
+        chars = list(set(pattern_segments[0]))
+        if 1==len(chars):
+          stopper = '(?!' + String(chars[0]).to_xs().escape_regexp() + ')'
+
+    pattern_segments = list(map( lambda s: String(s).escape_regexp().to_xs(), pattern_segments ))
+    if pattern_segments:
+      pattern_segments = [pattern_segments[0]] + [stopper] + pattern_segments[1:]
+    else:
+      pattern_segments = [stopper]
     
     return ''.join(pattern_segments)
   

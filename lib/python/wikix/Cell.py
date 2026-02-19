@@ -1,6 +1,6 @@
 import re
-from Rule import Rule
-from unique import unique
+from .Rule import Rule
+from .unique import unique
 
 class Cell(Rule):
   def __init__( self, name, definition ):

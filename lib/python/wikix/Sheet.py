@@ -1,16 +1,18 @@
 import re
-from unique import unique
-from String import String
-from Root import Root
+from .unique import unique
+from .String import String
+from .Root import Root
 from collections import deque
 
-class Sheet(object):  
+class Sheet(object):
   def __init__(self):
     self.preserve_whitespace = 0
     self.rules = {}
     self.line_regexps = []
     self.inline_regexps = []
     self.root = None
+    self.escape_inline_syntax_regexp = None
+    self.escape_line_syntax_regexp = None
   
   def transform_syntax( self, text, context ):
     if not context:
@@ -65,6 +67,18 @@ class Sheet(object):
       text
     )
   
+  def transform_xhtml( self, xhtml: str ) -> str:
+    """Transform XHTML back to WikiX markup (reverse transform).
+
+    Args:
+        xhtml: XHTML string
+    Returns:
+        WikiX markup string
+    """
+    from .xhtml_to_wikix_py import XhtmlToWikix
+    transformer = XhtmlToWikix(self)
+    return transformer.transform(xhtml)
+
   def normalize( self, text ):
     # Normalize new lines
     text = re.sub( r'\r\n', "\n", text )

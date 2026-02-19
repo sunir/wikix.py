@@ -1,5 +1,5 @@
 import re
-from Rule import Rule
+from .Rule import Rule
 
 class Paragraph(Rule):
   # Paragraphs always match
@@ -21,3 +21,8 @@ class Paragraph(Rule):
   # Paragraphs always match
   def set_regexp( self, *regexps ):
     self.regexp = re.compile(r'')
+
+  def emit_syntax( self, inner ):
+    """Paragraph: plain content + newline (no wrapper syntax)."""
+    result = ''.join(inner).strip()
+    return [result, '\n']

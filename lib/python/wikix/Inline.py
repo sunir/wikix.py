@@ -1,6 +1,6 @@
 import re
-from Rule import Rule
-from String import String
+from .Rule import Rule
+from .String import String
 
 class Inline(Rule):
   def is_inline(self):
@@ -49,7 +49,7 @@ class Inline(Rule):
     if md:
       end_spaces = [md.group(0)]
     inner = inner.strip()
-    return start_spaces + super([inner]) + end_spaces
+    return start_spaces + super().emit_syntax([inner]) + end_spaces
   
   def regexp_absolute_start( self ):
     return ''

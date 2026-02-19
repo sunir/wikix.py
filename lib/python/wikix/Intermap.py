@@ -4,10 +4,12 @@ import json
 
 class Intermap(object):
   def __init__(self, intermap=None, intermap_text=None, intermap_filename='lib/intermap.txt'):
+    self.intermap_json = '"intermap": { "children": [] }'  # Default empty intermap
+
     if intermap_filename and os.path.exists(intermap_filename) and os.path.isfile(intermap_filename):
       with open(intermap_filename, 'rt') as file:
         intermap_text = file.read()
-      
+
     if intermap_text:
       self.intermap_json = self._intermap_text_to_json(intermap_text)
 
