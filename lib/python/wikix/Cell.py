@@ -36,6 +36,17 @@ class Cell(Rule):
 
     return self.cache
   
+  def emit_syntax(self, inner):
+    """Emit WikiX for a cell (list item): inner content + newline.
+
+    The parent Multiline rule (ul/ol) will prefix each line with the
+    starts character (* or #). Strip surrounding whitespace — the forward
+    transform captures the space after * as part of the cell content,
+    and Multiline.emit_syntax re-adds the separator space.
+    """
+    text = ''.join(inner).strip()
+    return [text, '\n']
+
   def emit( self, ines, parent, context ):
     cdata = ''
     if not self.block_children.match( self.cache[0] ):
