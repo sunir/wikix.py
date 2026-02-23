@@ -584,7 +584,7 @@ class WikixSheets(object):
           "scope": "link",
           "link": {
             "pattern": {
-              "regexp": "(\\\\b[A-Z]+[a-z]+[A-Z][A-Za-z]+(?:\\\#\\\\w+)?\\\\b)(\\\&quot;\\\&quot;(\\\\w+))?"
+              "regexp": "(\\\\b[A-Z]+[a-z]+[A-Z][A-Za-z]+(?:\\\#\\\\w+)?\\\\b)(&#039;&#039;(\\\\w+))?"
             },
             "href": "/wiki/$1",
             "page_missing": "no-such-page",
