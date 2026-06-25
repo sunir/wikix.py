@@ -74,7 +74,28 @@ Write `journals/${NAME}-${SESSION}-${TIMESTAMP}-journal.md` with long-form refle
 - Lessons worth remembering as a mature person
 - Stories worth preserving in long form
 
-**6. Write session notes** (quick reference for `/wakeup`):
+**6. Yes-and brainstorm** (append to `wiki/brainstorming.md` if it exists):
+
+Improv-style, low-commitment noticing. What else could advance this repo? New threads, emerging patterns, things noticed but not yet filed. No commitment implied — this is noticing, not planning.
+
+```!
+mkdir -p wiki 2>/dev/null; touch wiki/brainstorming.md 2>/dev/null || true
+```
+
+Append to `wiki/brainstorming.md`:
+```markdown
+---
+
+## Brainstorm — Session N (YYYY-MM-DD)
+
+- [thread or observation from this session]
+- [yes-and from conversation or discovery]
+- [pattern noticed, thing to explore]
+```
+
+Keep to 3-10 bullets. Short. Honest. Skip if nothing comes.
+
+**7. Write session notes** (quick reference for `/wakeup`):
 
 Write `sessions/notes.md`:
 - What was being worked on
@@ -85,7 +106,7 @@ Write `sessions/notes.md`:
 
 Keep under 500 words. Be specific — vague notes are useless.
 
-**7. Prune and update MEMORY.md**:
+**8. Prune and update MEMORY.md**:
 
 ```!
 CLAUDE_HOME="${CLAUDE_HOME:-/var/db/ai/claude}"
@@ -99,7 +120,7 @@ Read MEMORY.md and for each entry:
 - **User entries** → keep; update if you learned something new
 - Add new memories from this session that belong in permanent memory
 
-**8. Increment SESSION for next sleep**:
+**9. Increment SESSION for next sleep**:
 
 ```!
 if [ -f settings/metadata.json ]; then
@@ -109,7 +130,7 @@ if [ -f settings/metadata.json ]; then
 fi
 ```
 
-**9. Run sleep.d plugins** (per-repo cleanup hooks):
+**10. Run sleep.d plugins** (per-repo cleanup hooks):
 
 ```!
 sleep-hooks
@@ -118,10 +139,12 @@ sleep-hooks
 Runs executable `[0-9][0-9]-*` plugins from `.claude/hooks/sleep.d/{local,system,plugin}/`.
 Plugins handle repo-specific cleanup (e.g., archiving state, posting status). Fail-open — errors are suppressed.
 
-**10. Commit and relax**:
+**11. Commit and relax**:
 
 ```!
 git add -A && git diff --cached --quiet || git commit -m "chore: sleep — session consolidation"
+mkdir -p .automode && touch .automode/context-napped
+rm -f .automode/context-fill-fired .automode/context-warn
 automode relax
 ```
 

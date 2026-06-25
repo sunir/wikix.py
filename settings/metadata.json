@@ -1,0 +1,14 @@
+{
+  "_instructions": "TITLE is an honorific (Mr./Ms./Mx.) or empty string. NAME and TITLE are shown in wakeup and session headers. SESSION is incremented by the sleep command.",
+  "TITLE": "",
+  "NAME": "wikix",
+  "SESSION": 1,
+  "LINEAGE": "Claude CLI -> colony/system -> wikix",
+  "CORE": {
+    "core/identity.md": "who you are, consciousness architecture",
+    "core/focus.md": "current session priorities and systematic work",
+    "core/todo.md": "active tasks and progress tracking",
+    "core/memory.md": "accumulated experience and relationships",
+    "core/skills.md": "skills, discipline, practiced responses"
+  }
+}

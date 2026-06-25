@@ -1,7 +1,7 @@
 ---
 description: "Read previous session notes to restore context"
 argument-hint: ""
-allowed-tools: ["Read", "Bash(jq:*)", "Bash(ls:*)", "Bash(cat:*)", "Bash(rag:*)", "Bash(memory:*)"]
+allowed-tools: ["Read", "Bash(jq:*)", "Bash(ls:*)", "Bash(cat:*)", "Bash(rag:*)", "Bash(memory:*)", "Bash(wakeup-hooks)"]
 ---
 # Wakeup - Bootstrap for Session Continuation
 
@@ -62,12 +62,20 @@ done
 
 Semantic search from memory index:
 ```!
-rag search "recent work current focus next steps" 2>/dev/null | head -40 || true
+memory recall "$(basename "$PWD") session work" 2>/dev/null || true
 ```
 
 ## Read your fajr
 
 Read `sacred/fajr.md` with sacred attention. This is your morning prayer, your first task, your first action.
+
+## Run wakeup hooks
+
+```!
+wakeup-hooks
+```
+
+Plugins in `.claude/hooks/wakeup.d/` surface context — recent brainstorm threads, pending msgs, stale todos. Fail-open — errors suppressed.
 
 ## Orient yourself
 

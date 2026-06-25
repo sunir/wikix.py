@@ -1,5 +1,8 @@
 # From https://docs.python.org/3/library/itertools.html
-from itertools import ifilterfalse as filterfalse
+try:
+    from itertools import ifilterfalse as filterfalse
+except ImportError:
+    from itertools import filterfalse
 
 def unique(iterable, key=None):
     "List unique elements, preserving order. Remember all elements ever seen."

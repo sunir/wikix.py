@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Javascript Markup Spike 2</title>
+    <script type="text/javascript" src="jquery-1.2.1.js"></script>    
+    <script type="text/javascript" src="wikix_Class.js"></script>
+    <script type="text/javascript" src="wikiy.js"></script>
+
+  <script type="text/javascript">
+var sheet = {
+  root: {
+    children: [ 
+      'lists', 'blockquote', 'monospace', 'table', 
+      'headers', 'hr', 
+      'p'
+    ]
+  },
+
+  lists: {
+    children: [ 'ul', 'ol' ]
+  },
+
+  ul: {
+    scope: 'multiline',
+    tag: 'ul',
+    starts: '*',
+    children: ['lists','li']
+  },
+
+  ol: {
+    scope: 'multiline',
+    tag: 'ol',      
+    starts: '#',
+    children: ['lists','li']
+  },
+    
+  li: {
+    scope: 'line',    
+    tag: 'li',
+    children: ['inline_styles']
+  },
+
+  blockquote: {
+    scope: 'multiline',
+    tag: 'blockquote',
+    starts: ':',
+    children: [ 'blockquote', 'p' ]
+  },
+
+  monospace: {
+    scope: 'multiline',
+    tag: 'pre',
+    starts: ' ',
+    whitespace: 'preserve',
+    children: [ 'monospace_line' ]
+  },
+  
+  monospace_line: {
+    scope: 'line',
+    children: ['inline_styles']
+  },
+
+  table: {
+    scope: 'multiline',
+    tag: 'table',
+    starts: '||',    
+    children: ['tr']
+  },
+  
+  tr: {
+    scope: 'line',
+    tag: 'tr',
+    children: ['td']
+  },
+  
+  td: {
+    scope: 'inline',
+    tag: 'td',
+    ends: '||',    
+    children: ['inline_styles']
+  },
+
+  headers: {
+    children: [ 'h6', 'h5', 'h4', 'h3', 'h2', 'h1' ]
+  },
+
+  h1: {
+    scope: 'line',
+    tag: 'h1',
+    starts: "==",
+    optionallyEnds: "=+",
+    children: ['inline_styles']
+  },
+  
+  h2: {
+    scope: 'line',
+    starts: "===",
+    optionallyEnds: "=+",
+    tag: 'h2',
+    
+    children: ['inline_styles']
+  },
+
+  h3: {
+    scope: 'line',
+    starts: "====",
+    optionallyEnds: "=+",
+    tag: 'h3',
+    
+    children: ['inline_styles']
+  },
+
+  h4: {
+    scope: 'line',
+    starts: "=====",
+    optionallyEnds: "=+",
+    tag: 'h4',
+    
+    children: ['inline_styles']
+  },
+
+  h5: {
+    scope: 'line',
+    starts: "======",
+    optionallyEnds: "=+",
+    tag: 'h5',
+    
+    children: ['inline_styles']
+  },
+
+  h6: {
+    scope: 'line',
+    starts: "=======+",
+    optionallyEnds: "=+",
+    tag: 'h6',
+    
+    children: ['inline_styles']
+  },
+
+  hr: {
+    scope: 'line',
+    equals: "----",
+    optionallyEnds: "-+",
+    tag: 'hr'
+  },
+  
+  p: {
+    scope: 'paragraph',
+    tag: 'p',    
+    children: ['inline_styles']
+  },  
+
+  inline_styles: {
+   children: [ 'escape_escape_syntax', 'escape_syntax', 'strong', 'em', 'links' ]
+  },  
+
+  escape_escape_syntax: {
+    scope: 'inline',
+    equals: '```',
+    emit: '`'
+  },
+
+  escape_syntax: {
+    scope: 'inline',
+    starts: '`',
+    ends: '`'
+  },
+
+  strong: {
+    scope: 'inline',
+    starts: "'''",
+    ends: "'''",
+    tag: 'strong',
+    
+    children: ['inline_styles']
+  },
+
+  em: {
+    scope: 'inline',
+    starts: "''",
+    ends: "''",
+    tag: 'em',
+    
+    children: ['inline_styles']
+  },
+
+  links: {
+    children: [ 'empty_descriptive_link', 'descriptive_link', 'url', 'wikilink', 'freelink' ]
+  },
+
+  empty_descriptive_link: {
+    scope: 'link',
+    link: {
+      pattern: '[url]',
+      href: '$1',
+      text: '[$1]'
+    }
+  },
+
+  descriptive_link: {
+    scope: 'link',
+    link: {
+      pattern: '[url text]',
+      href: '$1',
+      text: '[$2]',
+      image: '$2'
+    }
+  },
+
+  url: {
+    scope: 'link',
+    link: {
+      pattern: 'url',
+      href: '$1',
+      text: '$1',
+      image: ''
+    }
+  },
+  
+  wikilink: {
+    scope: 'link',
+    link: {
+      pattern: { regexp: '[A-Z]+[a-z]+([A-Z]+[a-z]+)+' },
+      href: 'action=edit&id=$0',
+      text: '$0'
+    }
+  },
+  
+  freelink: {
+    scope: 'link',
+    link: {
+      pattern: '[[text]]',
+      href: 'action=edit&id=$1',
+      text: '[[$1]]'
+    }
+  }  
+}  
+    
+    //// Install the renderer //////////////////////////////////////////////
+    function getText() {
+      return document.getElementById('Text').value;
+    }
+
+    function updateRender() {
+      var before = (new Date()).getTime();
+      var result = sheet.transform_syntax( getText() );
+      var after = (new Date()).getTime();
+      document.getElementById('Html').innerHTML = (after - before) + "<hr>" + result;
+    }
+
+
+    window.onload = function() {
+      sheet = Wikix(sheet);
+    
+      document.getElementById('form').onkeyup = function() { 
+        updateRender();
+        //return false;
+      };
+      // document.getElementById("UnitTest").innerHTML = "<hr><h1>Unit Testing</h1>" + Wikix.Test();
+    }
+  </script>    
+  </head>
+  <body>
+      <form action="" id='form'>
+        <p><textarea name="Text" id="Text" class="WikiText" rows="20" cols="50">== Live Preview
+
+  This area demonstrates a live Javascript preview, using the InfiniteTypewriter Javascript renderer. Editing the above text area will change this text.
+
+The '''markup''' follows the basic rules of [http://www.usemod.com/cgi-bin/mb.pl?TextFormattingRules MeatBall:TextFormattingRules].</textarea></p>
+  <p><input type="submit"/> <input type="checkbox" id="debug" name="debug" value="on"> <label for="debug">Debug?</label></p>
+      </form>
+      <div id="Html" class="RenderedText">Javascript disabled</div>
+      <div id="UnitTest"></div>
+      
+      <div id="dump"></div>
+  </body>
+</html>
+    

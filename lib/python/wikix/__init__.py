@@ -1,4 +1,4 @@
-from Compiler import Compiler
+from .Compiler import Compiler
 
 class Wikix(object):
   def __init__(self, wikix_sheet_json, get_page_id, does_page_exist):

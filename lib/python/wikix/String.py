@@ -1,20 +1,29 @@
 import re
-import urllib
+try:
+    # Python 2
+    import urllib
+    urllib_quote_func = urllib.quote
+    urllib_unquote_func = urllib.unquote
+except AttributeError:
+    # Python 3
+    import urllib.parse
+    urllib_quote_func = urllib.parse.quote
+    urllib_unquote_func = urllib.parse.unquote
 
 class String(str):
   # TODO: test save_spaces^M
   def canonicalize( self, save_spaces = False ):
-    result = self
+    result = String(self)
     result = result.lower()
     result = re.sub(r'\&\w+;', '', result)
-    result = re.sub(r'/\&#\d+;', '', result)
+    result = re.sub(r'&#\d+;', '', result)
     result = re.sub(r'_', '', result)
     if save_spaces:
       result = re.sub( r'\s+', '_', result ) 
     result = re.sub( r'\W+', '', result )
     if save_spaces:
-      result = String(result.sub( r'_', ' ' )).squeeze_spaces()
-    return result
+      result = String(re.sub( r'_', ' ', result )).squeeze_spaces()
+    return String(result)
 
   def escape_punctuation(self):
     return String(re.sub( r'([^\w\d\s])', r'\\\1', self ))
@@ -33,12 +42,12 @@ class String(str):
     return String(re.sub( r'([\$\@])\\', r'\1', self ))
 
   def encode_uri(self):
-    return String(urllib.quote(self.encode('utf-8')))
+    return String(urllib_quote_func(self.encode('utf-8')))
     # return re.sub( r'([^a-zA-Z0-9\!\@\$\*\(\)\-\_\,\.])', lambda md: sprintf( "%%%02x", md.group(0) ), self )
 
   # TODO: I'm not sure this is all that safe. What about UTF8 attacks?
   def decode_uri(self):
-    return String(urllib.unquote(self).decode('utf-8'))
+    return String(urllib_unquote_func(self))
 
   # Existing to_xs does not escape quotes (') or doublequotes (")
   def to_xs(self):
@@ -55,16 +64,22 @@ class String(str):
     return String(self.replace( r'&apos;', "'" ).replace( '&#039;', "'" ).replace( r'&quot;', '"' ).replace( '&gt;', '>' ).replace( '&lt;', '<' ).replace( '&amp;', '&'))
 
   def format_with_array( self, array ):
-    return String(re.sub(r'\$(\d+)', lambda md: String(array[int(md.group(1))-1]).escape_variable_interpolations() or '', self ))
+    def safe_substitute(match):
+      index = int(match.group(1)) - 1
+      if 0 <= index < len(array):
+        return String(array[index]).escape_variable_interpolations()
+      else:
+        return ''
+    return String(re.sub(r'\$(\d+)', safe_substitute, self ))
 
   def format_with_hash( self, hash ):
     return String(re.sub(r'\@(\d+)', lambda md: String(hash[md.group(1)]).escape_variable_interpolations() or '', self ))
   
   def minimal_regexp( self ):
-    return String(re.sub( r'(.)\+', '\1', self ))
+    return String(re.sub( r'(.)[+]', r'\1', self ))
 
   def unchomp( self ):
-    return String(self + "\n" if self[-1] != "\n" else self)
+    return String(self + "\n" if not self or self[-1] != "\n" else self)
 
   def squeeze_spaces( self ):
     return String(re.sub( r'\s+', ' ', self.strip() ))
