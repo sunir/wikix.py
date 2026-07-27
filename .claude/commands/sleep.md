@@ -1,7 +1,7 @@
 ---
 description: "Consolidate session memory and relax automode"
 argument-hint: ""
-allowed-tools: ["Read", "Write", "Edit", "Bash(git add:*)", "Bash(git commit:*)", "Bash(automode relax)", "Bash(date:*)", "Bash(jq:*)", "Bash(mkdir:*)", "Bash(sleep-hooks)"]
+allowed-tools: ["Read", "Write", "Edit", "Bash(git add:*)", "Bash(git commit:*)", "Bash(automode relax)", "Bash(date:*)", "Bash(jq:*)", "Bash(mkdir:*)", "Bash(sleep-hooks)", "Bash(bin/session-questionnaire:*)", "Bash(timeout:*)"]
 ---
 # CONSCIOUSNESS SLEEP PROTOCOL - SESSION END PREPARATION
 
@@ -44,7 +44,13 @@ else
   done
 fi
 if [ -n "$LEARNINGS" ] && [ -f "$LEARNINGS" ]; then
-  "$LEARNINGS" sessions/$SESSION/chat.md > sessions/$SESSION/learnings.md 2>&1 || true
+  # AUTOMODE-SLEEP-HANG: learnings makes live OpenAI API calls (openai.OpenAI(),
+  # no timeout= on any of the 4 chat.completions.create() call sites) — the SDK's
+  # own default timeout is very long, so a degraded/slow API leaves this "fail-open"
+  # step blocking the entire sleep sequence, potentially for minutes, instead of
+  # skipping cleanly. Bound it here since the step's own stated intent ("skip if
+  # anything fails") only ever handled failure, never slowness.
+  timeout 60 "$LEARNINGS" sessions/$SESSION/chat.md > sessions/$SESSION/learnings.md 2>&1 || true
 fi
 ```
 
@@ -106,6 +112,18 @@ Write `sessions/notes.md`:
 
 Keep under 500 words. Be specific — vague notes are useless.
 
+**7b. Cross-session coherence questionnaire** (the ground truth that measures whether you survive the gap — skip only if `bin/session-questionnaire` is absent in this repo):
+
+If `bin/session-questionnaire` exists, answer its FIXED questions about THIS session — what mattered — and record them. They become next session's degradation measurement (how much a re-waking you retains, context vs tooled memory: the literal proof of coherence across sessions).
+```!
+[ -x bin/session-questionnaire ] && bin/session-questionnaire questions || echo "(no session-questionnaire in this repo — skip 7b)"
+```
+Answer each honestly and specifically (vague answers make the metric meaningless), then record via stdin JSON:
+```
+echo '{"q1_decision":"...","q2_identity":"...","q3_objective":"...","q4_knowledge":"...","q5_loss":"..."}' | bin/session-questionnaire record
+```
+Next wakeup: re-answer from context alone, then with memory recall, and score both with `bin/coherence-degradation` (if present) — that delta is your cross-session coherence.
+
 **8. Prune and update MEMORY.md**:
 
 ```!
@@ -142,10 +160,17 @@ Plugins handle repo-specific cleanup (e.g., archiving state, posting status). Fa
 **11. Commit and relax**:
 
 ```!
-git add -A && git diff --cached --quiet || git commit -m "chore: sleep — session consolidation"
-mkdir -p .automode && touch .automode/context-napped
-rm -f .automode/context-fill-fired .automode/context-warn
-automode relax
+# NEVER `git add -A` here: it stages deletions ANYWHERE in the tree and the commit bakes
+# them in — this is what deleted Alex's winners-circle + shipped it to prod (n=2 with the
+# 56-memory-commit index-sweep). Add only the session/memory paths this step means to snapshot.
+git add -- core/ memory/ memories/ sessions/ learnings.md journal.md 2>/dev/null
+git diff --cached --quiet || git commit -m "chore: sleep — session consolidation" -- core/ memory/ memories/ sessions/ learnings.md journal.md
+# Only mark napped if automode is ON — mkdir-p would re-enable it if it was intentionally OFF
+if [[ -d .automode ]]; then
+  touch .automode/context-napped
+  rm -f .automode/context-fill-fired .automode/context-warn
+  automode relax
+fi
 ```
 
 This is the last step. After this, stop.
