@@ -173,5 +173,12 @@ if [[ -d .automode ]]; then
 fi
 ```
 
-This is the last step. After this, stop.
+This is the last step of consolidation — but not automatically the end of
+your turn. If /sleep was triggered by context-fill pressure, treat it as a
+checkpoint and continue whatever you were working on; the context-fill
+watcher won't nudge you again until a real compaction happens
+(`automode.d/05-context-fill` now respects `.automode/context-napped`,
+cleared by PreCompact). If /sleep was a deliberate end-of-session call
+(user asked you to wrap up, or automode relax is the actual intent), then
+stopping here is correct — use judgment on which situation this is.
 

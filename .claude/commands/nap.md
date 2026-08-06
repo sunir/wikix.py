@@ -53,4 +53,9 @@ if [[ -d .automode ]]; then
 fi
 ```
 
-This is the last step. Stop after this.
+This is the last step of the handoff — but not the last step of your turn.
+Nap is a checkpoint, not an exit: continue with whatever you were doing
+before context-fill interrupted you. Don't end your turn here, and don't
+run /nap or /sleep again — the context-fill watcher won't nudge you again
+until a real compaction happens (`automode.d/05-context-fill` now respects
+`.automode/context-napped`, cleared by PreCompact).
