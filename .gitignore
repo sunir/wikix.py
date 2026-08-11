@@ -5,7 +5,7 @@ transcripts/
 
 # === COLONY MANAGED RULES ===
 # Do not edit - managed by: colony git sync
-# Last sync: 2026-08-07 18:04:09
+# Last sync: 2026-08-11 18:04:48
 
 # Prohibit patterns (must ignore)
 *.backup*
@@ -80,6 +80,7 @@ __pycache__/
 core/.rag-statusline
 core/.todo-statusline
 core/compressed-context.json
+inbox/
 issues/
 logs/
 mail/cur/*
