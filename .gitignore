@@ -1,6 +1,6 @@
 # === COLONY MANAGED RULES ===
 # Do not edit - managed by: colony git sync
-# Last sync: 2026-08-07 16:30:36
+# Last sync: 2026-08-12 11:49:52
 
 # Prohibit patterns (must ignore)
 *.backup*
@@ -56,7 +56,8 @@
 .focusmode
 .focusmode-log
 .focusmode-search-done
-.homeostat/
+.homeostat/automode-monitor.last
+.homeostat/cycle-total
 .idea/
 .maintain/state.json
 .msg/
@@ -75,6 +76,7 @@ __pycache__/
 core/.rag-statusline
 core/.todo-statusline
 core/compressed-context.json
+inbox/
 issues/
 logs/
 mail/cur/*
