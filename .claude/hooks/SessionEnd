@@ -25,7 +25,7 @@
 source "$(dirname "$0")/lib/common.sh"
 setup_hook_env
 
-HOOK_DIR="$SCRIPT_DIR/SessionEnd.d"
+HOOK_DIR="${HOOK_DIR:-$SCRIPT_DIR/SessionEnd.d}"
 [[ ! -d "$HOOK_DIR" ]] && exit 0
 
 _run_plugin() {
@@ -44,9 +44,15 @@ _run_plugin() {
 
     [[ -x "$plugin" ]] || return
 
+    export HOOK_PLUGIN_EFFECT="$(mktemp)"
+
     OUTPUT=$(echo "$INPUT" | "$plugin" 2>&1)
     EXIT_CODE=$?
 
+
+    log_plugin_run "SessionEnd" "$PLUGIN_NAME" "$EXIT_CODE" "${#OUTPUT}" "merged" "$HOOK_PLUGIN_EFFECT"
+
+    rm -f "$HOOK_PLUGIN_EFFECT"; unset HOOK_PLUGIN_EFFECT
     [[ -n "$OUTPUT" ]] && echo "$OUTPUT" >&2
 }
 
