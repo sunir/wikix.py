@@ -51,14 +51,16 @@ class String(str):
 
   # Existing to_xs does not escape quotes (') or doublequotes (")
   def to_xs(self):
+    # First, escape & only if it's not already the start of an HTML entity
+    text = re.sub(r'&(?!(?:\w+;|#\d+;))', '&amp;', self)
+    # Then escape the other characters
     html_escape_table = {
-      "&": "&amp;",
       '"': "&quot;",
       "'": "&#039;",
       ">": "&gt;",
       "<": "&lt;",
     }
-    return String( ''.join(map(lambda c: html_escape_table.get(c,c), self)) )
+    return String( ''.join(map(lambda c: html_escape_table.get(c,c), text)) )
 
   def from_xs(self):
     return String(self.replace( r'&apos;', "'" ).replace( '&#039;', "'" ).replace( r'&quot;', '"' ).replace( '&gt;', '>' ).replace( '&lt;', '<' ).replace( '&amp;', '&'))

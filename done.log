@@ -1,0 +1,12 @@
+# 2026-08-14T18:13:39.873397-04:00 | branch:master | commit:cf5994e
+[todo ] Fix test_compile_meatball_wikix_sheet - intermap NoneType error
+  # Fixed by adding Intermap initialization to test_compiler.py setUp()
+
+# 2026-08-14T18:18:46.811610-04:00 | branch:master | commit:cf5994e
+[todo ] Fix test_html_entities - HTML entity encoding issue
+  # Fixed by modifying String.to_xs() to use entity-aware ampersand escaping
+
+# 2026-08-14T18:19:46.308737-04:00 | branch:master | commit:cf5994e
+[todo ] Fix test_undefined_page_links - missing question mark for undefined pages
+  # Fixed by appending '?' to undefined page links in Link.py inner_emit()
+

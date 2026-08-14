@@ -7,6 +7,7 @@ import unittest
 import json
 from wikix.Compiler import Compiler
 from wikix.WikixSheets import WikixSheets
+from wikix.Intermap import Intermap
 from wikix.Sheet import Sheet
 from wikix.Root import Root
 from wikix.Multiline import Multiline
@@ -21,7 +22,8 @@ from wikix.Cell import Cell
 class TestCompiler(unittest.TestCase):
     def setUp(self):
         self.compiler = Compiler()
-        self.sheets = WikixSheets()
+        self.intermap = Intermap()
+        self.sheets = WikixSheets(self.intermap)
 
     def test_compiler_initialization(self):
         """Test Compiler can be initialized"""

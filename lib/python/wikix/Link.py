@@ -61,9 +61,12 @@ class Link(Inline):
       after = String(self.definition['link']['after']).format_with_array( captures ).format_with_hash( context ).unescape_variable_interpolations()
     
     klass = self.name
+    page_missing = False
     if None != self.definition['link'].get('page_missing') and not context['page_exists']( href, context ):
       klass = klass + ' ' + self.definition['link']['page_missing']
-    
+      page_missing = True
+      after = after + '?'
+
     result = None
     if None != self.definition['link'].get('image') and re.match( Patterns.patterns['image'], href):
       alt = ''
@@ -73,7 +76,7 @@ class Link(Inline):
 
     elif None != self.definition['link'].get('name'):
       result = "<a name='" + String(self.definition['link']['name']).format_with_array( captures ) + "'/>"
-      
+
     else:
       result = "<a href='" + href + "' class='" + klass + "'>" + text + "</a>";
     return before + result + after + trailing_punctuation

@@ -9,42 +9,6 @@
       "content": "specs",
       "status": "show",
       "id": 1
-    },
-    {
-      "id": 2,
-      "type": "todo",
-      "status": "taken",
-      "content": "Fix test_compile_meatball_wikix_sheet - intermap NoneType error",
-      "transcript_addr": "e6a6772a-7401-4c31-81db-66aca870fee3:9877884e-8c58-4a2d-b30c-b821a45cc8f5",
-      "provenance": {
-        "created_at": "2026-08-14T22:11:54.207550+00:00",
-        "transcript_addr": "e6a6772a-7401-4c31-81db-66aca870fee3:9877884e-8c58-4a2d-b30c-b821a45cc8f5",
-        "git_commit": "a74769b"
-      }
-    },
-    {
-      "id": 3,
-      "type": "todo",
-      "status": "avail",
-      "content": "Fix test_html_entities - HTML entity encoding issue",
-      "transcript_addr": "e6a6772a-7401-4c31-81db-66aca870fee3:9877884e-8c58-4a2d-b30c-b821a45cc8f5",
-      "provenance": {
-        "created_at": "2026-08-14T22:11:59.705223+00:00",
-        "transcript_addr": "e6a6772a-7401-4c31-81db-66aca870fee3:9877884e-8c58-4a2d-b30c-b821a45cc8f5",
-        "git_commit": "a74769b"
-      }
-    },
-    {
-      "id": 4,
-      "type": "todo",
-      "status": "avail",
-      "content": "Fix test_undefined_page_links - missing question mark for undefined pages",
-      "transcript_addr": "e6a6772a-7401-4c31-81db-66aca870fee3:9877884e-8c58-4a2d-b30c-b821a45cc8f5",
-      "provenance": {
-        "created_at": "2026-08-14T22:12:05.048979+00:00",
-        "transcript_addr": "e6a6772a-7401-4c31-81db-66aca870fee3:9877884e-8c58-4a2d-b30c-b821a45cc8f5",
-        "git_commit": "a74769b"
-      }
     }
   ]
 }
